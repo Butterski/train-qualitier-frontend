@@ -1,23 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import { Header } from "./Components/Header/Header";
+import { MainMenu } from "./Views/MainMenu/MainMenu";
+import { GraphView } from "./Views/GraphView/GraphView";
+import { MeasurementsList } from "./Views/MeasurementsList/MeasurementsList";
 
 function App() {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const buttonName = searchParams.get("button");
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <Routes>
+        <Route path="/" element={<MainMenu />} />
+        <Route 
+          path="/graph" 
+          element={<GraphView buttonName={buttonName} />} 
+          />
+        <Route
+          path="/show-measurements"
+          element={<MeasurementsList buttonName={buttonName} />}
+        />
+      </Routes>
     </div>
   );
 }

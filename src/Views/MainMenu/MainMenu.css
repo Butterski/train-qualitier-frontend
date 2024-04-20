@@ -1,0 +1,31 @@
+.app-main {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    width: 100vw;
+    background: #292929;
+  }
+  .link-wrapper {
+    display: grid;
+    gap: 1rem;
+    width: 100%;
+    max-width: 32rem;
+  }
+  .link-block {
+    display: block;
+  }
+  .link-card {
+    padding: 0.2rem;
+  }
+  .link-card-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .link-card-icon {
+    width: 2rem;
+    height: 2rem;
+  }
+  
