@@ -19,13 +19,13 @@ export const MainMenu = () => {
         <div className="link-wrapper">
           <Link
             className="link-block"
-            onClick={() => handleLinkClick("start-measure")}
+            onClick={() => handleLinkClick("new-measurement")}
           >
             <Card className="link-card" variant="outlined">
               <CardActionArea>
                 <CardContent className="link-card-content">
                   <div>
-                    <h2>Start Measurement</h2>
+                    <h2>New Measurement</h2>
                     <p>Initiate a new train quality assessment</p>
                   </div>
                   <AddchartIcon fontSize="large" />
