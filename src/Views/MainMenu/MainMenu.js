@@ -19,7 +19,7 @@ export const MainMenu = () => {
         <div className="link-wrapper">
           <Link
             className="link-block"
-            onClick={() => handleLinkClick("new-measurement")}
+            onClick={() => handleLinkClick("measurement-view")}
           >
             <Card className="link-card" variant="outlined">
               <CardActionArea>

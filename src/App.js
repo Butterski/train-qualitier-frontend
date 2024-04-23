@@ -26,7 +26,7 @@ function App() {
           element={<MeasurementsList buttonName={buttonName} />}
         />
         <Route
-          path="/new-measurement"
+          path="/measurement-view"
           element={<MeasurementView buttonName={buttonName} />}
         />
       </Routes>
