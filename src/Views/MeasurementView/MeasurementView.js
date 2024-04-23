@@ -6,21 +6,83 @@ import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import PauseCircleIcon from "@mui/icons-material/PauseCircle";
 import Paper from "@mui/material/Paper";
+import { BASE_URL } from "../../apiConfig";
 import "./MeasurementView.css";
 
 export const MeasurementView = () => {
+  const [measurement_started, setMeasurementStarted] = useState(false);
+  const [measurementName, setMeasurementName] = useState(
+    "Put your measurement name here"
+  );
   const [logs, setLogs] = useState("");
-  const [measurementId, setMeasurementId] = useState(1);
-  const logsRef = useRef(); 
+  const [measurementId, setMeasurementId] = useState("");
+  const logsRef = useRef();
+
+  const addLog = (log) => {
+    setLogs((prevLogs) => prevLogs + log + "\n");
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setLogs(
-        (prevLogs) => `${prevLogs}New log at ${new Date().toISOString()}\n`
-      );
+      measurement_started &&
+        fetch(`${BASE_URL}/get_measurement_log/${measurementId}`)
+          .then((response) => response.json())
+          .then((data) => {
+            addLog(
+              `${new Date(data[0][0]).toLocaleTimeString()}:${new Date(
+                data[0][0]
+              ).getMilliseconds()}, x: ${data[0][1]} y: ${data[0][2]} z: ${
+                data[0][3]
+              }, temperature: ${data[0][4]}, magnetometer: ${data[0][5]}`
+            );
+          })
+          .catch((error) => console.log(error));
     }, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [measurement_started]);
+
+  const handleStartMeasurement = () => {
+    if (!measurementId) {
+      fetch(`${BASE_URL}/measurement/create/${measurementName}`)
+        .then((response) => response.json())
+        .then((data) => {
+          const measurement_id = data["measurement_id"];
+          setMeasurementId(measurement_id);
+          startMeasurement(measurement_id);
+        })
+        .catch((error) => console.log(error));
+    } else {
+      startMeasurement(measurementId);
+    }
+  };
+
+  const startMeasurement = (measurement_id) => {
+    setMeasurementStarted(true);
+    let response_msg = {};
+    fetch(`${BASE_URL}/measurement/start/${measurement_id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        response_msg = data;
+        addLog(data["message"]);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const handleStopMeasurement = () => {
+    setMeasurementStarted(false);
+    fetch(`${BASE_URL}/measurement/stop/${measurementId}`)
+      .then((response) => response.json())
+      .then((data) => addLog(data["message"]))
+      .catch((error) => console.log(error));
+  };
+
+  const handlePauseMeasurement = () => {
+    setMeasurementStarted(false);
+    fetch(`${BASE_URL}/measurement/pause/${measurementId}`)
+      .then((response) => response.json())
+      .then((data) => addLog(data["message"]))
+      .catch((error) => console.log(error));
+  };
 
   useEffect(() => {
     logsRef.current.scrollTop = logsRef.current.scrollHeight;
@@ -35,8 +97,9 @@ export const MeasurementView = () => {
             className="measure-id-input"
             label="ID"
             variant="standard"
-            defaultValue={measurementId}
+            value={measurementId}
             inputProps={{ style: { fontSize: "2rem" } }}
+            hiddenLabel
             InputProps={{
               readOnly: true,
             }}
@@ -47,6 +110,8 @@ export const MeasurementView = () => {
             label="Measurement Name"
             variant="standard"
             inputProps={{ style: { fontSize: "2rem" } }}
+            value={measurementName}
+            onChange={(e) => setMeasurementName(e.target.value)}
             fullWidth
           />
         </div>
@@ -67,6 +132,8 @@ export const MeasurementView = () => {
                   size="large"
                   color="success"
                   endIcon={<PlayCircleOutlineIcon />}
+                  disabled={measurement_started}
+                  onClick={handleStartMeasurement}
                 >
                   Start
                 </Button>
@@ -75,7 +142,8 @@ export const MeasurementView = () => {
                   color="warning"
                   size="large"
                   endIcon={<PauseCircleIcon />}
-                  // disabled
+                  disabled={!measurement_started}
+                  onClick={handlePauseMeasurement}
                 >
                   Pause
                 </Button>
@@ -84,7 +152,8 @@ export const MeasurementView = () => {
                   color="error"
                   size="large"
                   endIcon={<HighlightOffIcon />}
-                  // disabled
+                  disabled={!measurement_started}
+                  onClick={handleStopMeasurement}
                 >
                   Stop
                 </Button>
