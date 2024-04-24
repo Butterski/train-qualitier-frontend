@@ -5,41 +5,25 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import PauseCircleIcon from "@mui/icons-material/PauseCircle";
+import { useParams } from "react-router-dom";
 import Paper from "@mui/material/Paper";
 import { BASE_URL } from "../../apiConfig";
 import "./MeasurementView.css";
 
 export const MeasurementView = () => {
+  const { optional_measurement_id } = useParams();
   const [measurement_started, setMeasurementStarted] = useState(false);
   const [measurementName, setMeasurementName] = useState(
     "Put your measurement name here"
   );
   const [logs, setLogs] = useState("");
-  const [measurementId, setMeasurementId] = useState("");
+  const [measurementId, setMeasurementId] = useState(
+    optional_measurement_id || ""
+  );
   const logsRef = useRef();
-
   const addLog = (log) => {
     setLogs((prevLogs) => prevLogs + log + "\n");
   };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      measurement_started &&
-        fetch(`${BASE_URL}/get_measurement_log/${measurementId}`)
-          .then((response) => response.json())
-          .then((data) => {
-            addLog(
-              `${new Date(data[0][0]).toLocaleTimeString()}:${new Date(
-                data[0][0]
-              ).getMilliseconds()}, x: ${data[0][1]} y: ${data[0][2]} z: ${
-                data[0][3]
-              }, temperature: ${data[0][4]}, magnetometer: ${data[0][5]}`
-            );
-          })
-          .catch((error) => console.log(error));
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [measurement_started]);
 
   const handleStartMeasurement = () => {
     if (!measurementId) {
@@ -87,6 +71,41 @@ export const MeasurementView = () => {
   useEffect(() => {
     logsRef.current.scrollTop = logsRef.current.scrollHeight;
   }, [logs]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      measurement_started &&
+        fetch(`${BASE_URL}/get_measurement_log/${measurementId}`)
+          .then((response) => response.json())
+          .then((data) => {
+            addLog(
+              `${new Date(data[0][0]).toLocaleTimeString()}:${new Date(
+                data[0][0]
+              ).getMilliseconds()}, x: ${data[0][1]} y: ${data[0][2]} z: ${
+                data[0][3]
+              }, temperature: ${data[0][4]}, magnetometer: ${data[0][5]}`
+            );
+          })
+          .catch((error) => console.log(error));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [measurement_started]);
+
+  useEffect(() => {
+    if (optional_measurement_id) {
+      fetch(`${BASE_URL}/measurements/is_running/${optional_measurement_id}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data["is_running"]) {
+            setMeasurementStarted(true);
+            setMeasurementName(data["measurement_name"]);
+            addLog(`Measurement ${optional_measurement_id} is already running`);
+          }
+        })
+        .catch((error) => console.log(error));
+    }
+  }
+  , [optional_measurement_id]);
 
   return (
     <main className="app-main">
