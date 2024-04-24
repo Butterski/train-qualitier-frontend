@@ -1,56 +1,85 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
+import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
+import { BASE_URL } from "../../apiConfig";
 
 const columns = [
-  { field: "id", headerName: "ID", width: 90 },
   {
-    field: "firstName",
-    headerName: "First name",
-    width: 150,
+    field: "id",
+    headerName: "ID",
+    width: 90,
+  },
+  {
+    field: "measurementName",
+    headerName: "Measurement Name",
+    width: 300,
+  },
+  {
+    field: "grade",
+    headerName: "Grade",
+    width: 90,
     editable: true,
   },
   {
-    field: "lastName",
-    headerName: "Last name",
-    width: 150,
-    editable: true,
+    field: "created_at",
+    headerName: "Created At",
+    valueGetter: (value, row) => new Date(row.created_at).toLocaleString(),
+    width: 200,
   },
   {
-    field: "age",
-    headerName: "Age",
-    type: "number",
+    field: "show",
+    headerName: "Show",
     width: 110,
-    editable: true,
+    renderCell: (params) => {
+      return (
+        <Button
+          variant="outlined"
+          onClick={() => {
+            window.location.href = `/measurement-view/${params.row.id}`;
+          }}
+        >
+          Show
+        </Button>
+      );
+    },
   },
   {
-    field: "fullName",
-    headerName: "Full name",
-    description: "This column has a value getter and is not sortable.",
-    sortable: false,
-    width: 160,
-    valueGetter: (value, row) => `${row.firstName || ""} ${row.lastName || ""}`,
+    field: "measure",
+    headerName: "Measure",
+    width: 110,
+    renderCell: (params) => {
+      return (
+        <Button
+          variant="outlined"
+          onClick={() => {
+            window.location.href = `/measurement-view/${params.row.id}`;
+          }}
+        >
+          Measure
+        </Button>
+      );
+    },
   },
-];
-
-const rows = [
-  { id: 1, lastName: "Snow", firstName: "Jon", age: 14 },
-  { id: 2, lastName: "Lannister", firstName: "Cersei", age: 31 },
-  { id: 3, lastName: "Lannister", firstName: "Jaime", age: 31 },
-  { id: 4, lastName: "Stark", firstName: "Arya", age: 11 },
-  { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-  { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-  { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-  { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
 ];
 
 export const MeasurementsList = () => {
+  const [measurements, setMeasurements] = useState([]);
+  useEffect(() => {
+    fetch(`${BASE_URL}/measurements`)
+      .then((response) => response.json())
+      .then((data) => {
+        setMeasurements(data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
   return (
     <main className="app-main">
       <Box sx={{ height: "100%", width: "100%" }}>
         <DataGrid
-          rows={rows}
+          rows={measurements}
           columns={columns}
           initialState={{
             pagination: {
@@ -61,6 +90,7 @@ export const MeasurementsList = () => {
           }}
           pageSizeOptions={[10]}
           disableRowSelectionOnClick
+          loading={measurements.length === 0}
         />
       </Box>
     </main>
