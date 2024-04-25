@@ -5,6 +5,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { BASE_URL } from "../../apiConfig";
 
 const columns = [
+  // TODO: ADD RUNNING GREEN/RED ICON
   {
     field: "id",
     headerName: "ID",
