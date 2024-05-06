@@ -5,6 +5,7 @@ import { Header } from "./Components/Header/Header";
 import { MainMenu } from "./Views/MainMenu/MainMenu";
 import { MeasurementsList } from "./Views/MeasurementsList/MeasurementsList";
 import { MeasurementView } from "./Views/MeasurementView/MeasurementView";
+import { MeasurementData } from "./Views/MeasurementData/MeasurementData";
 
 function App() {
   // const location = useLocation();
@@ -22,6 +23,10 @@ function App() {
         <Route
           path="/measurement-view/:optional_measurement_id?"
           element={<MeasurementView />}
+        />
+        <Route
+          path="/measurement-data/:measurement_id"
+          element={<MeasurementData />}
         />
       </Routes>
     </div>
