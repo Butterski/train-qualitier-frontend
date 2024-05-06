@@ -184,7 +184,7 @@ export const MeasurementView = () => {
                   variant="contained"
                   size="large"
                   color="primary"
-                  // disabled
+                  disabled
                 >
                   Save
                 </Button>
@@ -192,7 +192,7 @@ export const MeasurementView = () => {
                   variant="contained"
                   size="large"
                   color="secondary"
-                  // disabled
+                  disabled
                 >
                   Discard
                 </Button>

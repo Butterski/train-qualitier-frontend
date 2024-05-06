@@ -54,7 +54,7 @@ const columns = [
         <Button
           variant="outlined"
           onClick={() => {
-            window.location.href = `/measurement-view/${params.row.id}`;
+            window.location.href = `/measurement-data/${params.row.id}`;
           }}
         >
           Measure
