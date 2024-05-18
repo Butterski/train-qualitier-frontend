@@ -79,11 +79,12 @@ export const MeasurementView = () => {
           .then((response) => response.json())
           .then((data) => {
             addLog(
-              `${new Date(data[0][0]).toLocaleTimeString()}:${new Date(
-                data[0][0]
-              ).getMilliseconds()}, x: ${data[0][1]} y: ${data[0][2]} z: ${
-                data[0][3]
-              }, temperature: ${data[0][4]}, magnetometer: ${data[0][5]}`
+              `${new Date(data[0][0]).toLocaleTimeString()}, 
+              gyro: (x: ${data[0][1]} y: ${data[0][2]} z: ${data[0][3]}), 
+              acce: (x: ${data[0][4]} y: ${data[0][5]} z: ${data[0][6]}), 
+              magne: (x: ${data[0][7]} y: ${data[0][8]} z: ${data[0][9]}),
+              temp: ${data[0][10]},
+              humid: ${data[0][11]}`,
             );
           })
           .catch((error) => console.log(error));
@@ -104,8 +105,7 @@ export const MeasurementView = () => {
         })
         .catch((error) => console.log(error));
     }
-  }
-  , [optional_measurement_id]);
+  }, [optional_measurement_id]);
 
   return (
     <main className="app-main">
