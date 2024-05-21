@@ -24,7 +24,7 @@ export const WetnessGraph = ({ data }) => {
         <YAxis label={{ value: 'Humidity (%)', angle: -90, position: 'insideLeft'}} />
         <Tooltip />
         <Legend />
-        <Line type="monotone" dataKey="hum" stroke="#00aaaa" dot={false} activeDot={{ r: 8 }} />
+        <Line type="monotone" dataKey="hum" strokeWidth={4} stroke="#00aaaa" dot={false} activeDot={{ r: 8 }} />
       </LineChart>
     </ResponsiveContainer>
   );
