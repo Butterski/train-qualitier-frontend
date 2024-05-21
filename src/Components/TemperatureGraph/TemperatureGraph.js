@@ -1,21 +1,36 @@
 import React from "react";
-import { Line } from "react-chartjs-2";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 export const TemperatureGraph = ({ data }) => {
-  const chartData = {
-    labels: data.map((_, index) => `Sample ${index + 1}`),
-    datasets: [
-      {
-        label: "Temperature (°C)",
-        data: data,
-        borderColor: "rgb(255, 159, 64)",
-        backgroundColor: "rgba(255, 159, 64, 0.2)",
-        fill: false,
-      },
-    ],
-  };
+  const startTime = data['t'][0];
+  const formattedData = data['t'].map((timestamp, index) => ({
+    time: (timestamp - startTime).toFixed(0),
+    temperature: data['temp'][index],
+  }));
 
-  const options = { scales: { y: { beginAtZero: true } } };
+  const hasData = formattedData.some(entry => entry.temperature != null);
 
-  return <Line data={chartData} options={options} />;
+  return (
+    <ResponsiveContainer width="95%" height={400}>
+      <LineChart
+        data={formattedData}
+        margin={{
+          top: 5,
+          right: 30,
+          left: 20,
+          bottom: 5,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="time" label={{ value: 'Time (seconds)', position: 'insideBottomRight', offset: -10 }} />
+        
+        {hasData && <YAxis label={{ value: 'Temperature (°C)', angle: -90, position: 'insideLeft'}} />}
+        
+        <Tooltip />
+        <Legend />
+        
+        <Line type="monotone" dataKey="temperature" stroke="#ff7300" dot={false} activeDot={false} />
+      </LineChart>
+    </ResponsiveContainer>
+  );
 };
