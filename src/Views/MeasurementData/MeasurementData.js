@@ -5,12 +5,13 @@ import { MagnetometerGraph } from "../../Components/MagnetometerGraph/Magnetomet
 import { TemperatureGraph } from "../../Components/TemperatureGraph/TemperatureGraph";
 import { WetnessGraph } from "../../Components/WetnessGraph/WetnessGraph";
 import "./MeasurementData.css";
+
 import { BASE_URL } from "../../apiConfig";
 
 export const MeasurementData = () => {
   const [data, setData] = useState([]);
   const [measurementName, setMeasurementName] = useState("");
-  const [measurementId, setMeasurementId] = useState(window.location.href.split("/").pop());
+  const measurementId = window.location.href.split("/").pop();
   const transferData = (array) => {
     let data = {
       t: [],
@@ -48,17 +49,13 @@ export const MeasurementData = () => {
       .then((data) => {
         setData(transferData(data));
       });
-  }, []);
-
-  useEffect(() => {
     fetch(`${BASE_URL}/measurements/info/${measurementId}`)
       .then((response) => response.json())
       .then((data) => {
         setMeasurementName(data["measurement_name"]);
       });
-  }, [measurementId]);
+  }, []);
 
-  
 
   return (
     <main className="app-main-data">
@@ -67,11 +64,10 @@ export const MeasurementData = () => {
           <div>Loading...</div>
         ) : (
           <div>
-            <h1>{measurementName} | {measurementId}</h1>
-            <GyroscopeGraph
-              data={data}
-              className="div1"
-            />
+            <h1 style={{textAlign: 'center'}}>
+              {measurementName} | {measurementId}
+            </h1>
+            <GyroscopeGraph data={data} className="div1" />
             <AccelerometerGraph data={data} className="div2" />
             <MagnetometerGraph data={data} className="div3" />
             <TemperatureGraph data={data} className="div4" />
