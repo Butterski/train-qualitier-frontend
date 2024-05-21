@@ -79,7 +79,7 @@ export const MeasurementView = () => {
           .then((response) => response.json())
           .then((data) => {
             addLog(
-              `${new Date(data[0][0]).toLocaleTimeString()}, 
+              `${new Date(data[0][0] * 1000).toLocaleTimeString()}, 
               gyro: (x: ${data[0][1]} y: ${data[0][2]} z: ${data[0][3]}), 
               acce: (x: ${data[0][4]} y: ${data[0][5]} z: ${data[0][6]}), 
               magne: (x: ${data[0][7]} y: ${data[0][8]} z: ${data[0][9]}),
