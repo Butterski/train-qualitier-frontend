@@ -23,7 +23,7 @@ export const AccelerometerGraph = ({ data }) => {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="time" label={{ value: 'Time (seconds)', position: 'insideBottomRight', offset: -10 }}/>
-        <YAxis label={{ value: 'Accelerometer', angle: -90, position: 'insideLeft'}} />
+        <YAxis label={{ value: 'Accelerometer m/s^2', angle: -90, position: 'insideLeft'}} />
         <Tooltip />
         <Legend />
         <Line type="monotone" dataKey="ax" stroke="#a884a8" dot={false} activeDot={{ r: 8 }} />

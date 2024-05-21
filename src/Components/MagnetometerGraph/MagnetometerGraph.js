@@ -23,7 +23,7 @@ export const MagnetometerGraph = ({ data }) => {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="time" label={{ value: 'Time (seconds)', position: 'insideBottomRight', offset: -10 }}/>
-        <YAxis label={{ value: 'Magnetometer', angle: -90, position: 'insideLeft'}} />
+        <YAxis label={{ value: 'Magnetometer uT', angle: -90, position: 'insideLeft'}} />
         <Tooltip />
         <Legend />
         <Line type="monotone" dataKey="mx" stroke="rgb(255, 159, 64)" dot={false} activeDot={{ r: 8 }} />

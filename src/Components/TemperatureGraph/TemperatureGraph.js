@@ -28,8 +28,7 @@ export const TemperatureGraph = ({ data }) => {
         
         <Tooltip />
         <Legend />
-        
-        <Line type="monotone" dataKey="temperature" stroke="#ff7300" dot={false} activeDot={false} />
+        <Line type="monotone" dataKey="temperature" strokeWidth={4} stroke="#ff7300" dot={false} activeDot={false} />
       </LineChart>
     </ResponsiveContainer>
   );

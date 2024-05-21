@@ -23,7 +23,7 @@ export const GyroscopeGraph = ({ data }) => {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="time" label={{ value: 'Time (seconds)', position: 'insideBottomRight', offset: -10 }}/>
-        <YAxis label={{ value: 'Gyroscope', angle: -90, position: 'insideLeft'}} />
+        <YAxis label={{ value: 'Gyroscope rads/s', angle: -90, position: 'insideLeft'}} />
         <Tooltip />
         <Legend />
         <Line type="monotone" dataKey="gx" stroke="#8884d8" dot={false} activeDot={{ r: 8 }} />
