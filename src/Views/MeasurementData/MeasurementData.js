@@ -4,8 +4,6 @@ import { GyroscopeGraph } from "../../Components/GyroscopeGraph/GyroscopeGraph";
 import { MagnetometerGraph } from "../../Components/MagnetometerGraph/MagnetometerGraph";
 import { TemperatureGraph } from "../../Components/TemperatureGraph/TemperatureGraph";
 import { WetnessGraph } from "../../Components/WetnessGraph/WetnessGraph";
-import { Chart } from "react-chartjs-2";
-import { Chart as ChartJS } from "chart.js/auto";
 import "./MeasurementData.css";
 import { BASE_URL } from "../../apiConfig";
 
