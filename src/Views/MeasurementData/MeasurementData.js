@@ -9,6 +9,8 @@ import { BASE_URL } from "../../apiConfig";
 
 export const MeasurementData = () => {
   const [data, setData] = useState([]);
+  const [measurementName, setMeasurementName] = useState("");
+  const [measurementId, setMeasurementId] = useState(window.location.href.split("/").pop());
   const transferData = (array) => {
     let data = {
       t: [],
@@ -41,14 +43,20 @@ export const MeasurementData = () => {
     return data;
   };
   useEffect(() => {
-    const url = window.location.href;
-    const measureId = url.split("/").pop();
-    fetch(`${BASE_URL}/get_measurement_data/${measureId}`)
+    fetch(`${BASE_URL}/get_measurement_data/${measurementId}`)
       .then((response) => response.json())
       .then((data) => {
         setData(transferData(data));
       });
   }, []);
+
+  useEffect(() => {
+    fetch(`${BASE_URL}/measurements/info/${measurementId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setMeasurementName(data["measurement_name"]);
+      });
+  }, [measurementId]);
 
   
 
@@ -59,6 +67,7 @@ export const MeasurementData = () => {
           <div>Loading...</div>
         ) : (
           <div>
+            <h1>{measurementName} | {measurementId}</h1>
             <GyroscopeGraph
               data={data}
               className="div1"
