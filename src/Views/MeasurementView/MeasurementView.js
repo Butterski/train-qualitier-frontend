@@ -42,11 +42,9 @@ export const MeasurementView = () => {
 
   const startMeasurement = (measurement_id) => {
     setMeasurementStarted(true);
-    let response_msg = {};
     fetch(`${BASE_URL}/measurement/start/${measurement_id}`)
       .then((response) => response.json())
       .then((data) => {
-        response_msg = data;
         addLog(data["message"]);
       })
       .catch((error) => console.log(error));
