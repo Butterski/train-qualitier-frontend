@@ -54,7 +54,7 @@ export const MeasurementData = () => {
       .then((data) => {
         setMeasurementName(data["measurement_name"]);
       });
-  }, []);
+  }, [measurementId]);
 
 
   return (
